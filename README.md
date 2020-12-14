@@ -9,7 +9,8 @@ There is small script can be helpful when releasing your application with [stand
 ## Installation
 
 ```bash
-sudo wget -O /usr/local/bin/releasetool https://github.com/kimyvgy/release-tool/archive/releasetool-v0.1.0
+wget -O /usr/local/bin/releasetool \
+  https://github.com/kimyvgy/releasetool/releases/download/v0.1.0/releasetool-v0.1.0
 ```
 
 ## Usages
@@ -45,7 +46,7 @@ standard-version --first-release --release-as=v0.1.0
 - Release new version:
 ```bash
 standard-version --prerelease --skip.tag \
-  && git commit --amend --no-edit -m "$(releasetool changelog 0.1.0 0.2.0)"
+  && git commit --amend --no-edit -m "$(releasetool changelog 0.1.0 0.2.0)" \
   && git tag -a v0.2.0 -m "$(releasetool changelog 0.1.0 0.2.0 --markdown)"
 
 git push upstream HEAD --follow-tags
