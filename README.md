@@ -1,4 +1,4 @@
-# release-tool
+# releasetool
 
 There is small script can be helpful when releasing your application with [standard-version](https://github.com/conventional-changelog/standard-version).
 
