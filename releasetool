@@ -1,0 +1,63 @@
+#!/bin/bash
+
+_v='0.1.0'
+
+sv=$(which standard-version)
+
+if [ -z $sv ]; then
+    echo 'Error: The "standard-version" is required. Please run:'
+    echo '  yarn global add standard-version'
+    exit 1
+fi
+
+function init()
+{
+    echo "Initialized .versionrc file."
+    if [ ! -f '.versionrc' ]; then
+        echo '{
+    "types": [
+        {"type": "feat", "section": "Features"},
+        {"type": "refactor", "section": "Refactors"},
+        {"type": "perf", "section": "Performances"},
+        {"type": "fix", "section": "Bug Fixes"},
+        {"type": "chore", "hidden": true},
+        {"type": "docs", "hidden": true},
+        {"type": "style", "hidden": true},
+        {"type": "test", "hidden": true},
+        {"type": "release", "hidden": true}
+    ],
+    "releaseCommitMessageFormat": "release: {{currentTag}}"
+}' > .versionrc
+    fi
+}
+
+function changelog()
+{
+    cat CHANGELOG.md | awk "/## \[$2\]/ {p=1}; p; /## \[$1\]/ {p=0}" \
+    | head -n -2 | sed 1d \
+    | sed "1s/^.*$/release: $2/" \
+    | sed "s/^###\(.*\)$/✱\1:/" \
+    | sed 's/^*/-/' | sed 's/\*\{2,\}//g' | sed '/^$/d' | sed '1 a \\' \
+    | sed 's/!\?\[.+\](.+)//g' \
+    | sed -r 's/\(\[([a-zA-Z0-9]+)\]\(\S+\)/(\1)/g'
+}
+
+function script()
+{
+    if [ -z $1 ] || [ -z $2 ]; then
+        echo 'Error: Argument is missing. For example:'
+        echo '  releasetool script 1.0.0-beta.3 1.0.0-beta.4'
+        exit 1
+    fi
+
+    echo 'standard-version --prerelease --skip.tag \'
+    echo "  && git commit --amend --no-edit -m \"\$(releasetool changelog $1 $2)\""
+    echo "  && git tag -a v$2 -m v$2"
+}
+
+function version()
+{
+    echo "Release Note CLI: v$_v"
+}
+
+$@
