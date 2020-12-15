@@ -1,31 +1,34 @@
 # releasetool
 
-There is small script can be helpful when releasing your application with [standard-version](https://github.com/conventional-changelog/standard-version).
+The small script is used when releasing new version with [standard-version](https://github.com/conventional-changelog/standard-version).
 
 ## Features
 
-- Parse changelog from CHANGELOG.md by the specific version.
+- Generate `.verionrc` file for `standard-version`.
+- Parse changelog from `CHANGELOG.md` by the specific version. The output format: plain text, markdown.
 
 ## Installation
 
 ```bash
-wget -O /usr/local/bin/releasetool \
+sudo wget -O /usr/local/bin/releasetool \
   https://github.com/kimyvgy/releasetool/releases/download/v0.1.0/releasetool-v0.1.0
 ```
 
 ## Usages
 
-### .versionrc
+### Initialize .versionrc
 
-Create `.versionrc` file:
+The `.versionrc` file can be auto-created with `releasetool` by following command:
 
 ```
 releasetool init
 ```
 
+If you want to modify `.versionrc`, please read [conventional-changelog/conventional-changelog-config-spec](https://github.com/conventional-changelog/conventional-changelog-config-spec/tree/master/versions/2.1.0).
+
 ### package.json
 
-- Please initialize `package.json` file before using.
+Please initialize `package.json` file before using `standard-version`.
 It must contain two fields: `version` and `repository.url`. For example:
 ```json
 {
